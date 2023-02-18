@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Category from 'App/Models/Category';
+import { schema } from '@ioc:Adonis/Core/Validator'
 
 export default class CategoriesController {
 
@@ -14,14 +15,23 @@ export default class CategoriesController {
         return result
     }
     public async create(ctx: HttpContextContract) {
-        var fields = ctx.request.all()
+        const newSchema = schema.create({
+            name: schema.string(),
+          })
+
+        const fields = await ctx.request.validate({ schema: newSchema })
         var category = new Category
         category.name= fields.name
         const result = await category.save()
         return result
     }
     public async update(ctx: HttpContextContract) {
-        var fields = ctx.request.all()
+        const newSchema = schema.create({
+            name: schema.string(),
+            id: schema.number(),
+          })
+
+        const fields = await ctx.request.validate({ schema: newSchema })
         var id= fields.id
         var category= await Category.findOrFail(id)
         category.name= fields.name

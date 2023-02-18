@@ -1,6 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
 import Store from 'App/Models/Store';
+import { schema } from '@ioc:Adonis/Core/Validator'
 
 export default class StoresController {
     public async getAll(ctx: HttpContextContract){
@@ -13,7 +13,12 @@ export default class StoresController {
         return result
     }
     public async create(ctx: HttpContextContract) {
-        var fields = ctx.request.all();
+        const newSchema = schema.create({
+            manager_staff_id: schema.number(),
+            address_id: schema.number(),
+          })
+
+        const fields = await ctx.request.validate({ schema: newSchema })
         var stores= new Store()
         stores.managerStaffId= fields.manager_staff_id
         stores.addressId= fields.address_id
@@ -21,8 +26,13 @@ export default class StoresController {
         return result
     }
     public async update(ctx: HttpContextContract) {
+        const newSchema = schema.create({
+            manager_staff_id: schema.number(),
+            address_id: schema.number(),
+            id: schema.number(),
+          })
 
-        var fields = ctx.request.all();
+        const fields = await ctx.request.validate({ schema: newSchema })
         var stores= await Store.findOrFail(fields.id)
         stores.managerStaffId= fields.manager_staff_id
         stores.addressId= fields.address_id

@@ -1,6 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 // import Database from '@ioc:Adonis/Lucid/Database'
 import Actor from 'App/Models/Actor';
+import { schema } from '@ioc:Adonis/Core/Validator'
 
 
 export default class ActorsController {
@@ -17,8 +18,12 @@ export default class ActorsController {
     }
 
     public async create(ctx: HttpContextContract) {
+        const newSchema = schema.create({
+            first_name: schema.string(),
+            last_name: schema.string(),
+          })
 
-        var fields = ctx.request.all();
+        const fields = await ctx.request.validate({ schema: newSchema })
         var actor = new Actor();
         actor.firstName = fields.first_name;
         actor.lastName = fields.last_name;
@@ -27,7 +32,13 @@ export default class ActorsController {
     }
 
     public async update(ctx: HttpContextContract) {
-        var fields = ctx.request.all();
+        const newSchema = schema.create({
+            first_name: schema.string(),
+            last_name: schema.string(),
+            id: schema.number(),
+          })
+
+        const fields = await ctx.request.validate({ schema: newSchema })
         var id = fields.id;
         var actor = await Actor.findOrFail(id);
         actor.firstName = fields.first_name;
