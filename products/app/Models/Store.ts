@@ -1,8 +1,9 @@
-import { DateTime, InvalidZone } from 'luxon'
-import { BaseModel, column, hasMany, belongsTo, HasMany, BelongsTo} from '@ioc:Adonis/Lucid/Orm'
+import { DateTime } from 'luxon'
+import { BaseModel, column, hasMany, belongsTo, HasMany, BelongsTo, Has} from '@ioc:Adonis/Lucid/Orm'
 import Customer from './Customer'
 import Address from './Address'
 import Inventory from './Inventory'
+import Staff from './Staff'
 
 export default class Store extends BaseModel {
   @column({ isPrimary: true })
@@ -20,6 +21,12 @@ export default class Store extends BaseModel {
   @hasMany(() =>Inventory)
   public inventory: HasMany<typeof Inventory>
   
+  @belongsTo(()=> Staff)
+  public managerStaff: BelongsTo<typeof Staff> 
+  
+  @hasMany(()=> Staff)
+  public staff: HasMany<typeof Staff> 
+
   @belongsTo(()=> Address)
   public city: BelongsTo<typeof Address>
 

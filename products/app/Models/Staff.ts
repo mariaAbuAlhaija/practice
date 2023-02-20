@@ -1,5 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import Payment from './Payment';
+import Rental from './Rental';
+import Address from './Address';
+import Store from './Store';
 
 export default class Staff extends BaseModel {
   public static table= 'staffs'
@@ -33,6 +37,18 @@ export default class Staff extends BaseModel {
   
   @column({ serializeAs: "password", })
   public password: string;
+
+  @belongsTo (()=>Address)
+  public address: BelongsTo<typeof Address>
+
+  @belongsTo (()=>Store)
+  public store: BelongsTo<typeof Store>
+
+  @hasMany (()=>Payment)
+  public payment: HasMany<typeof Payment>
+
+  @hasMany (()=>Rental)
+  public rental: HasMany<typeof Rental>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

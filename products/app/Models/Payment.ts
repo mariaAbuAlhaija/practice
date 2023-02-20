@@ -1,5 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, belongsTo, column, BelongsTo } from '@ioc:Adonis/Lucid/Orm'
+import Customer from './Customer'
+import Staff from './Staff'
+import Rental from './Rental'
 
 export default class Payment extends BaseModel {
   public static table= 'payments'
@@ -21,6 +24,16 @@ export default class Payment extends BaseModel {
 
   @column({ serializeAs:"payment_date" })
   public paymentDate: Date
+
+  @belongsTo (()=>Customer)
+  public customer: BelongsTo<typeof Customer>
+
+  @belongsTo (()=>Staff)
+  public staff: BelongsTo<typeof Staff>
+
+  @belongsTo (()=>Rental)
+  public rental: BelongsTo<typeof Rental>
+
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

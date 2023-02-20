@@ -1,7 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Language from './Language'
 import Inventory from './Inventory'
+import Actor from './Actor'
+import Category from './Category'
 
 export default class Film extends BaseModel {
   public static table= 'films'
@@ -50,6 +52,12 @@ export default class Film extends BaseModel {
 
   @hasMany (()=> Inventory)
   public inventory: HasMany<typeof Inventory>
+
+  @manyToMany(() => Actor)
+  public actor: ManyToMany<typeof Actor>
+  
+  @manyToMany(() => Category)
+  public category: ManyToMany<typeof Category>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Film from './Film';
 import Store from './Store';
+import Rental from './Rental';
 
 export default class Inventory extends BaseModel {
   public static table= 'inventories'
@@ -19,6 +20,9 @@ export default class Inventory extends BaseModel {
 
   @belongsTo (()=>Store)
   public store: BelongsTo<typeof Store>
+
+  @hasMany (()=>Rental)
+  public rental: HasMany<typeof Rental>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

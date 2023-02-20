@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import Film from './Film'
 
 export default class Language extends BaseModel {
   public static table= 'languages'
@@ -10,6 +11,9 @@ export default class Language extends BaseModel {
 
   @column({ serializeAs:"name" })
   public name: string
+
+  @hasMany (()=>Film)
+  public film: HasMany<typeof Film>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

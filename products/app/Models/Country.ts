@@ -13,6 +13,7 @@ export default class Country extends BaseModel {
 
   @hasMany (()=>City)
   public city : HasMany<typeof City>
+  
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
