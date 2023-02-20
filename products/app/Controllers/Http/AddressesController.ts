@@ -4,14 +4,18 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 
 export default class AddressesController {
     public async getAll(ctx: HttpContextContract) {
-        var result = await Address.all();
+        var result = await Address.query().preload("city", (profileQuery) => {
+            profileQuery.preload('country')
+          });
         return result;
     }
 
     public async getById(ctx: HttpContextContract) {
 
         var id = ctx.params.id;
-        var result = await Address.findOrFail(id);
+        var result = await Address.query().preload("city", (profileQuery) => {
+            profileQuery.preload('country')
+          }).where('id', id);
         return result;
     }
 

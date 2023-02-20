@@ -4,7 +4,7 @@ import Payment from 'App/Models/Payment';
 
 export default class PaymentsController { 
     public async getAll(ctx: HttpContextContract) {
-    var result = await Payment.all();
+    var result = await Payment.query().preload("rental").preload('staff').preload('customer');
     return result;
 }
 

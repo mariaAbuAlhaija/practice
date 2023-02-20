@@ -4,14 +4,14 @@ import City from 'App/Models/City';
 
 export default class CitiesController {
     public async getAll(ctx: HttpContextContract) {
-        var result = await City.all(); 
+        var result = await City.query().preload("country"); 
         return result;
     }
 
     public async getById(ctx: HttpContextContract) {
 
         var id = ctx.params.id;
-        var result = await City.findOrFail(id);
+        var result = await City.query().preload("country").where('id', id);
         return result;
     }
 

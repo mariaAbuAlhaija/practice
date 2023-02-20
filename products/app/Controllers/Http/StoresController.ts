@@ -4,12 +4,19 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 
 export default class StoresController {
     public async getAll(ctx: HttpContextContract){
-        var result= await Store.all()
+        var result= await Store.query().preload('managerStaff')
+    //     .preload("address",
+    //     (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+    //      profileQuery.preload('country')
+    //    }));
         return result
     }
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
-        var result = await Store.findOrFail(id)
+        var result = await Store.query().preload("address",
+        (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+         profileQuery.preload('country')
+       })).preload('managerStaff').where('id', id)
         return result
     }
     public async create(ctx: HttpContextContract) {

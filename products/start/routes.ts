@@ -1,9 +1,9 @@
 import Route from '@ioc:Adonis/Core/Route'
 import Database from '@ioc:Adonis/Lucid/Database'
 
-Route.get('films', async () => {
-  return Database.from('films').select('*')
-})
+// Route.get('films', async () => {
+//   return Database.from('films').select('*')
+// })
 
 Route.group(()=>{
   Route.post('/',  "ActorsController.create")

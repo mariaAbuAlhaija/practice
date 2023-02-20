@@ -6,7 +6,7 @@ import Store from './Store'
 
 export default class Address extends BaseModel {
   public static table= 'address'
-
+  
   @column({ isPrimary: true })
   public id: number
   

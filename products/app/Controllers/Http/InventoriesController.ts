@@ -5,13 +5,19 @@ import Inventory from 'App/Models/Inventory'
 
 export default class InventoriesController {
     public async getAll(ctx: HttpContextContract){
-        var result= await Inventory.all()
+        var result= await Inventory.query().preload("store")
+        .preload('film', (filmQuery)=>{
+            filmQuery.preload("language").preload('originalLanguage')
+        })
         return result 
     }
 
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
-        var result=  await Inventory.findOrFail(id)
+        var result=  await Inventory.query().preload("store").
+        preload('film', (filmQuery)=>{
+            filmQuery.preload("language").preload('originalLanguage')
+        }).where('id', id)
         return result
     }
     public async create(ctx: HttpContextContract) {

@@ -4,14 +4,20 @@ import Staff from 'App/Models/Staff';
 
 export default class StaffController { 
     public async getAll(ctx: HttpContextContract) {
-    var result = await Staff.all();
+    var result = await Staff.query().preload("address",
+    (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+     profileQuery.preload('country')
+   })).preload('store');;
     return result;
 }
 
 public async getById(ctx: HttpContextContract) {
 
     var id = ctx.params.id;
-    var result = await Staff.findOrFail(id);
+    var result = await Staff.query().preload("address",
+     (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+      profileQuery.preload('country')
+    })).preload('store').where('id', id);;
     return result;
 }
 

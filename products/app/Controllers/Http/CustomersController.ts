@@ -4,14 +4,21 @@ import Customer from 'App/Models/Customer';
 
 export default class CustomersController {
     public async getAll(ctx: HttpContextContract) {
-        var result = await Customer.all();
+        var result = await Customer.query().preload("store").
+        preload('address', (addressQuery) =>
+        addressQuery.preload("city", (profileQuery) => {
+          profileQuery.preload('country')
+        }));
         return result;
     }
 
     public async getById(ctx: HttpContextContract) {
 
         var id = ctx.params.id;
-        var result = await Customer.findOrFail(id);
+        var result = await Customer.query().preload("store").preload('address', (addressQuery) =>
+        addressQuery.preload("city", (profileQuery) => {
+          profileQuery.preload('country')
+        })).where('id', id);
         return result;
     }
 

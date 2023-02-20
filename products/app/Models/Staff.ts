@@ -50,6 +50,9 @@ export default class Staff extends BaseModel {
   @hasMany (()=>Rental)
   public rental: HasMany<typeof Rental>
 
+  @hasMany (()=>Store)
+  public storee: HasMany<typeof Store>
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

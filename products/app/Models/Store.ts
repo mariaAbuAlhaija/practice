@@ -6,6 +6,7 @@ import Inventory from './Inventory'
 import Staff from './Staff'
 
 export default class Store extends BaseModel {
+  public static table= 'stores'
   @column({ isPrimary: true })
   public id: number
  
@@ -28,7 +29,7 @@ export default class Store extends BaseModel {
   public staff: HasMany<typeof Staff> 
 
   @belongsTo(()=> Address)
-  public city: BelongsTo<typeof Address>
+  public address: BelongsTo<typeof Address>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
