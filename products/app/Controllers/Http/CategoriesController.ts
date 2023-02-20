@@ -20,7 +20,7 @@ export default class CategoriesController {
           })
 
         const fields = await ctx.request.validate({ schema: newSchema })
-        var category = new Category
+        var category = new Category()
         category.name= fields.name
         const result = await category.save()
         return result

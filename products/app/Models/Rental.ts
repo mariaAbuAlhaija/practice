@@ -13,7 +13,7 @@ export default class Rental extends BaseModel {
 
   
   @column({ serializeAs:"rental_date" })
-  public rentalDate: Date
+  public rentalDate: DateTime
   
   @column({ serializeAs:"inventory_id" })
   public inventoryId: number
@@ -22,7 +22,7 @@ export default class Rental extends BaseModel {
   public customerId: number
   
   @column({ serializeAs:"return_date" })
-  public returnDate: Date
+  public returnDate: DateTime
   
   @column({ serializeAs:"staff_id" })
   public staffId: number

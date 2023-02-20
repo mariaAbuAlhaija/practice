@@ -18,7 +18,7 @@ export default class Film extends BaseModel {
   public description: string
 
   @column({ serializeAs:"release_year" })
-  public releaseYear: Date
+  public releaseYear: DateTime
 
   @column({ serializeAs:"language_id" })
   public languageId: number
@@ -39,10 +39,10 @@ export default class Film extends BaseModel {
   public replacementCost: number
 
   @column({ serializeAs:"rating" })
-  public rating: {"G", "PG", "PG-13", "R", "NC-17"}
+  public rating: string
 
   @column({ serializeAs:"special_features" })
-  public specialFeatures: {"Trailers", "Commentaries", "Deleted Scenes", "Behind the Scenes"}
+  public specialFeatures: string
   
   @belongsTo (()=>Language)
   public language: BelongsTo<typeof Language>

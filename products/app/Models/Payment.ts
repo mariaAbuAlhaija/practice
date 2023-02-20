@@ -17,13 +17,13 @@ export default class Payment extends BaseModel {
   public staffId: number
 
   @column({ serializeAs:"rental_id" })
-  public rental_id: number
+  public rentalId: number
 
   @column({ serializeAs:"amount" })
   public amount: number
 
   @column({ serializeAs:"payment_date" })
-  public paymentDate: Date
+  public paymentDate: DateTime
 
   @belongsTo (()=>Customer)
   public customer: BelongsTo<typeof Customer>
