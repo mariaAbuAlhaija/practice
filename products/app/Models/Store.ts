@@ -1,5 +1,8 @@
-import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { DateTime, InvalidZone } from 'luxon'
+import { BaseModel, column, hasMany, belongsTo, HasMany, BelongsTo} from '@ioc:Adonis/Lucid/Orm'
+import Customer from './Customer'
+import Address from './Address'
+import Inventory from './Inventory'
 
 export default class Store extends BaseModel {
   @column({ isPrimary: true })
@@ -10,7 +13,16 @@ export default class Store extends BaseModel {
  
   @column({ serializeAs: "address_id" })
   public addressId: number
- 
+
+  @hasMany(() =>Customer)
+  public customer: HasMany<typeof Customer>
+
+  @hasMany(() =>Inventory)
+  public inventory: HasMany<typeof Inventory>
+  
+  @belongsTo(()=> Address)
+  public city: BelongsTo<typeof Address>
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
