@@ -22,7 +22,9 @@ export default class Store extends BaseModel {
   @hasMany(() =>Inventory)
   public inventory: HasMany<typeof Inventory>
   
-  @belongsTo(()=> Staff)
+  @belongsTo(()=> Staff, {
+    foreignKey: "managerStaffId"
+  })
   public managerStaff: BelongsTo<typeof Staff> 
   
   @hasMany(()=> Staff)

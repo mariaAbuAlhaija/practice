@@ -99,7 +99,7 @@ Route.group(()=>{
   Route.delete('/:id',  "StaffController.destory")
   Route.get('/:id',  "StaffController.getById")
   Route.get('/',  "StaffController.getAll") 
-}).prefix('/staff')
+}).prefix('/staffs')
 
 Route.group(()=>{
   Route.post('/',  "StoresController.create")

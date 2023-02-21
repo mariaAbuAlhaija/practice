@@ -4,14 +4,114 @@ import Payment from 'App/Models/Payment';
 
 export default class PaymentsController { 
     public async getAll(ctx: HttpContextContract) {
-    var result = await Payment.query().preload("rental").preload('staff').preload('customer');
+    var result = await Payment.query().
+    preload("rental", (rentalQuery)=>
+    rentalQuery.preload('inventory')
+        .preload('staff', (staffQuery)=>  staffQuery.preload("address", (addressQuery)=>
+            addressQuery.preload("city", (profileQuery) => {
+            profileQuery.preload('country')
+            }))
+            .preload('store', (addressQuery)=> 
+            addressQuery.preload("address", (profileQuery) => {
+            profileQuery.preload('city')
+            }).preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+            addressQuery.preload("city", (profileQuery) => {
+            profileQuery.preload('country')
+            })))))
+        .preload('customer', (customerQuery)=>
+        customerQuery.preload("store", (storeQuery)=>
+        storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+        addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+            }))
+        .preload('store', (addressQuery)=> 
+        addressQuery.preload("address", (profileQuery) => {
+        profileQuery.preload('city')
+        }))
+        .preload("address",
+        (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+        })))).
+        preload('address', (addressQuery) =>
+        addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+    }))))
+    .preload('staff')
+    .preload('customer', (customerQuery)=>
+        customerQuery.preload("store", (storeQuery)=>
+        storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+        addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+            }))
+        .preload('store', (addressQuery)=> 
+        addressQuery.preload("address", (profileQuery) => {
+        profileQuery.preload('city')
+        }))
+        .preload("address",
+        (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+        })))).
+        preload('address', (addressQuery) =>
+        addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+    })));
     return result;
 }
 
 public async getById(ctx: HttpContextContract) {
 
     var id = ctx.params.id;
-    var result = await Payment.findOrFail(id);
+    var result = await Payment.query().
+    preload("rental", (rentalQuery)=>
+    rentalQuery.preload('inventory')
+        .preload('staff', (staffQuery)=>  staffQuery.preload("address", (addressQuery)=>
+            addressQuery.preload("city", (profileQuery) => {
+            profileQuery.preload('country')
+            }))
+            .preload('store', (addressQuery)=> 
+            addressQuery.preload("address", (profileQuery) => {
+            profileQuery.preload('city')
+            }).preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+            addressQuery.preload("city", (profileQuery) => {
+            profileQuery.preload('country')
+            })))))
+        .preload('customer', (customerQuery)=>
+        customerQuery.preload("store", (storeQuery)=>
+        storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+        addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+            }))
+        .preload('store', (addressQuery)=> 
+        addressQuery.preload("address", (profileQuery) => {
+        profileQuery.preload('city')
+        }))
+        .preload("address",
+        (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+        })))).
+        preload('address', (addressQuery) =>
+        addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+    }))))
+    .preload('staff')
+    .preload('customer', (customerQuery)=>
+        customerQuery.preload("store", (storeQuery)=>
+        storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+        addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+            }))
+        .preload('store', (addressQuery)=> 
+        addressQuery.preload("address", (profileQuery) => {
+        profileQuery.preload('city')
+        }))
+        .preload("address",
+        (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+        })))).
+        preload('address', (addressQuery) =>
+        addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+    }))).where('id', id)
     return result;
 }
 

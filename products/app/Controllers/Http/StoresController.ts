@@ -4,19 +4,36 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 
 export default class StoresController {
     public async getAll(ctx: HttpContextContract){
-        var result= await Store.query().preload('managerStaff')
-    //     .preload("address",
-    //     (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
-    //      profileQuery.preload('country')
-    //    }));
+        var result= await Store.query()
+        .preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+        addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+      }))
+      .preload('store', (addressQuery)=> 
+       addressQuery.preload("address", (profileQuery) => {
+       profileQuery.preload('city')
+     }))
+        .preload("address",
+        (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+         profileQuery.preload('country')
+       })));
         return result
     }
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
-        var result = await Store.query().preload("address",
+        var result = await Store.query()
+        .preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+        addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+      }))
+      .preload('store', (addressQuery)=> 
+       addressQuery.preload("address", (profileQuery) => {
+       profileQuery.preload('city')
+     }))
+        .preload("address",
         (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
          profileQuery.preload('country')
-       })).preload('managerStaff').where('id', id)
+       }))).where('id', id)
         return result
     }
     public async create(ctx: HttpContextContract) {

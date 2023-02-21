@@ -5,7 +5,20 @@ import Inventory from 'App/Models/Inventory'
 
 export default class InventoriesController {
     public async getAll(ctx: HttpContextContract){
-        var result= await Inventory.query().preload("store")
+        var result= await Inventory.query()
+        .preload("store", (storeQuery)=>
+                storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+               addressQuery.preload("city", (profileQuery) => {
+                profileQuery.preload('country')
+                }))
+               .preload('store', (addressQuery)=> 
+                addressQuery.preload("address", (profileQuery) => {
+                profileQuery.preload('city')
+                }))
+               .preload("address",
+                (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+                profileQuery.preload('country')
+               }))))
         .preload('film', (filmQuery)=>{
             filmQuery.preload("language").preload('originalLanguage')
         })
@@ -14,9 +27,21 @@ export default class InventoriesController {
 
     public async getById(ctx: HttpContextContract){
         var id= ctx.params.id
-        var result=  await Inventory.query().preload("store").
-        preload('film', (filmQuery)=>{
-            filmQuery.preload("language").preload('originalLanguage')
+        var result=  await Inventory.query().preload("store", (storeQuery)=>
+        storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+       addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+        }))
+       .preload('store', (addressQuery)=> 
+        addressQuery.preload("address", (profileQuery) => {
+        profileQuery.preload('city')
+        }))
+       .preload("address",
+        (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+        profileQuery.preload('country')
+       }))))
+    .preload('film', (filmQuery)=>{
+    filmQuery.preload("language").preload('originalLanguage')
         }).where('id', id)
         return result
     }

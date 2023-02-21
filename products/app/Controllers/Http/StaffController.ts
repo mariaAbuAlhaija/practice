@@ -4,20 +4,38 @@ import Staff from 'App/Models/Staff';
 
 export default class StaffController { 
     public async getAll(ctx: HttpContextContract) {
-    var result = await Staff.query().preload("address",
-    (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+    var result = await Staff.query()
+    .preload("address", (addressQuery)=>
+     addressQuery.preload("city", (profileQuery) => {
      profileQuery.preload('country')
-   })).preload('store');;
+   }))
+   .preload('store', (addressQuery)=> 
+    addressQuery.preload("address", (profileQuery) => {
+    profileQuery.preload('city')
+  }).preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+  addressQuery.preload("city", (profileQuery) => {
+  profileQuery.preload('country')
+})))
+  );;
     return result;
 }
 
 public async getById(ctx: HttpContextContract) {
 
     var id = ctx.params.id;
-    var result = await Staff.query().preload("address",
-     (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
-      profileQuery.preload('country')
-    })).preload('store').where('id', id);;
+    var result = await Staff.query()
+    .preload("address", (addressQuery)=>
+     addressQuery.preload("city", (profileQuery) => {
+     profileQuery.preload('country')
+   }))
+   .preload('store', (addressQuery)=> 
+    addressQuery.preload("address", (profileQuery) => {
+    profileQuery.preload('city')
+  }).preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+  addressQuery.preload("city", (profileQuery) => {
+  profileQuery.preload('country')
+})))
+  ).where('id', id);;
     return result;
 }
 

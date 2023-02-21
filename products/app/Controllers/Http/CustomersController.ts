@@ -4,7 +4,20 @@ import Customer from 'App/Models/Customer';
 
 export default class CustomersController {
     public async getAll(ctx: HttpContextContract) {
-        var result = await Customer.query().preload("store").
+        var result = await Customer.query().
+        preload("store", (storeQuery)=>
+           storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+          addressQuery.preload("city", (profileQuery) => {
+          profileQuery.preload('country')
+           }))
+          .preload('store', (addressQuery)=> 
+          addressQuery.preload("address", (profileQuery) => {
+          profileQuery.preload('city')
+          }))
+          .preload("address",
+          (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+          profileQuery.preload('country')
+          })))).
         preload('address', (addressQuery) =>
         addressQuery.preload("city", (profileQuery) => {
           profileQuery.preload('country')
@@ -15,10 +28,23 @@ export default class CustomersController {
     public async getById(ctx: HttpContextContract) {
 
         var id = ctx.params.id;
-        var result = await Customer.query().preload("store").preload('address', (addressQuery) =>
-        addressQuery.preload("city", (profileQuery) => {
-          profileQuery.preload('country')
-        })).where('id', id);
+        var result = await Customer.query().preload("store", (storeQuery)=>
+        storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
+       addressQuery.preload("city", (profileQuery) => {
+       profileQuery.preload('country')
+        }))
+       .preload('store', (addressQuery)=> 
+       addressQuery.preload("address", (profileQuery) => {
+       profileQuery.preload('city')
+       }))
+       .preload("address",
+       (addressQuery)=> addressQuery.preload("city", (profileQuery) => {
+       profileQuery.preload('country')
+       })))).
+     preload('address', (addressQuery) =>
+     addressQuery.preload("city", (profileQuery) => {
+       profileQuery.preload('country')
+     })).where('id', id);
         return result;
     }
 
