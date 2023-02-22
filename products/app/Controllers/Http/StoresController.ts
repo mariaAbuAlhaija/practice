@@ -4,6 +4,7 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 
 export default class StoresController {
     public async getAll(ctx: HttpContextContract){
+      var obj = await ctx.auth.authenticate()
         var result= await Store.query()
         .preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
         addressQuery.preload("city", (profileQuery) => {
@@ -20,6 +21,7 @@ export default class StoresController {
         return result
     }
     public async getById(ctx: HttpContextContract){
+      var obj = await ctx.auth.authenticate()
         var id= ctx.params.id
         var result = await Store.query()
         .preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
@@ -37,6 +39,7 @@ export default class StoresController {
         return result
     }
     public async create(ctx: HttpContextContract) {
+      var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             manager_staff_id: schema.number(),
             address_id: schema.number(),
@@ -50,6 +53,7 @@ export default class StoresController {
         return result
     }
     public async update(ctx: HttpContextContract) {
+      var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             manager_staff_id: schema.number(),
             address_id: schema.number(),
@@ -65,6 +69,7 @@ export default class StoresController {
     }
 
     public async destory(ctx: HttpContextContract) {
+      var obj = await ctx.auth.authenticate()
         var id = ctx.params.id
         var stores= await Store.findOrFail(id)
         await stores.delete()

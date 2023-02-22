@@ -12,13 +12,14 @@ export default class ActorsController {
     }
 
     public async getById(ctx: HttpContextContract) {
-
+        var obj = await ctx.auth.authenticate()
         var id = ctx.params.id;
         var result = await Actor.findOrFail(id);
         return result;
     }
 
     public async create(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             first_name: schema.string(),
             last_name: schema.string(),
@@ -33,6 +34,7 @@ export default class ActorsController {
     }
 
     public async update(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             first_name: schema.string(),
             last_name: schema.string(),
@@ -50,7 +52,7 @@ export default class ActorsController {
 
 
     public async destory(ctx: HttpContextContract) {
-
+        var obj = await ctx.auth.authenticate()
         var id = ctx.params.id;
         var actor = await Actor.findOrFail(id);
         await actor.delete();

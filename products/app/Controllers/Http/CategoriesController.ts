@@ -5,16 +5,19 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 export default class CategoriesController {
 
     public async getAll(ctx: HttpContextContract){
+        var obj = await ctx.auth.authenticate()
         var result= await Category.all()
         return result
     }
 
     public async getById(ctx: HttpContextContract){
+        var obj = await ctx.auth.authenticate()
         var id= ctx.params.id
         var result=  await Category.findOrFail(id)
         return result
     }
     public async create(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             name: schema.string(),
           })
@@ -26,6 +29,7 @@ export default class CategoriesController {
         return result
     }
     public async update(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             name: schema.string(),
             id: schema.number(),
@@ -40,6 +44,7 @@ export default class CategoriesController {
     }
 
     public async destory(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         var id = ctx.params.id
         var category = await Category.findOrFail(id)
         await category.delete()

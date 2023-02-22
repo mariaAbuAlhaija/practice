@@ -3,17 +3,21 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import Country from 'App/Models/Country';
 import { schema } from '@ioc:Adonis/Core/Validator'
 
-export default class CountriesController { public async getAll(ctx: HttpContextContract){
+export default class CountriesController { 
+    public async getAll(ctx: HttpContextContract){
+        var obj = await ctx.auth.authenticate()
     var result= await Country.all()
     return result
 }
 public async getById(ctx: HttpContextContract){
+    var obj = await ctx.auth.authenticate()
     var id= ctx.params.id
     var result= await Country.findOrFail(id)
     return result
     
 }
 public async create(ctx: HttpContextContract) {
+    var obj = await ctx.auth.authenticate()
     const newSchema = schema.create({
         country: schema.string(),
       })
@@ -25,6 +29,7 @@ public async create(ctx: HttpContextContract) {
     return result
 }
 public async update(ctx: HttpContextContract) {
+    var obj = await ctx.auth.authenticate()
     const newSchema = schema.create({
         country: schema.string(),
         id: schema.number(),
@@ -38,6 +43,7 @@ public async update(ctx: HttpContextContract) {
 }
 
 public async destory(ctx: HttpContextContract) {
+    var obj = await ctx.auth.authenticate()
     var id = ctx.params.id
     var country = await Country.findOrFail(id)
     await country.delete()

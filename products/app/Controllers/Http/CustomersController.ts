@@ -4,6 +4,7 @@ import Customer from 'App/Models/Customer';
 
 export default class CustomersController {
     public async getAll(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         var result = await Customer.query().
         preload("store", (storeQuery)=>
            storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
@@ -26,7 +27,7 @@ export default class CustomersController {
     }
 
     public async getById(ctx: HttpContextContract) {
-
+      var obj = await ctx.auth.authenticate()
         var id = ctx.params.id;
         var result = await Customer.query().preload("store", (storeQuery)=>
         storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
@@ -49,6 +50,7 @@ export default class CustomersController {
     }
 
     public async create(ctx: HttpContextContract) {
+      var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             store_id: schema.number(),
             first_name: schema.string(),
@@ -73,6 +75,7 @@ export default class CustomersController {
     }
 
     public async update(ctx: HttpContextContract) {
+      var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             store_id: schema.number(),
             first_name: schema.string(),
@@ -100,7 +103,7 @@ export default class CustomersController {
 
 
     public async destory(ctx: HttpContextContract) {
-
+      var obj = await ctx.auth.authenticate()
         var id = ctx.params.id;
         var customer = await Customer.findOrFail(id);
         await customer.delete();

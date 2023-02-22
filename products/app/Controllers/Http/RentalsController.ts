@@ -4,6 +4,7 @@ import Rental from 'App/Models/Rental';
 
 export default class RentalsController {
     public async getAll(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         var result = await Rental.query()
         .preload('inventory')
         .preload('staff', (staffQuery)=>  staffQuery.preload("address", (addressQuery)=>
@@ -39,7 +40,7 @@ export default class RentalsController {
     }
     
     public async getById(ctx: HttpContextContract) {
-    
+        var obj = await ctx.auth.authenticate()
         var id = ctx.params.id;
         var result = await Rental.query().preload('inventory')
         .preload('staff', (staffQuery)=>  staffQuery.preload("address", (addressQuery)=>
@@ -75,6 +76,7 @@ export default class RentalsController {
     }
     
     public async create(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             rental_date: schema.date(),
             inventory_id: schema.number(),
@@ -95,6 +97,7 @@ export default class RentalsController {
     }
     
     public async update(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             rental_date: schema.date(),
             inventory_id: schema.number(),
@@ -118,7 +121,7 @@ export default class RentalsController {
     
     
     public async destory(ctx: HttpContextContract) {
-    
+        var obj = await ctx.auth.authenticate()
         var id = ctx.params.id;
         var rental = await Rental.findOrFail(id);
         await rental.delete();

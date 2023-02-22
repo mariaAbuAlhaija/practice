@@ -5,6 +5,7 @@ import Inventory from 'App/Models/Inventory'
 
 export default class InventoriesController {
     public async getAll(ctx: HttpContextContract){
+        var obj = await ctx.auth.authenticate()
         var result= await Inventory.query()
         .preload("store", (storeQuery)=>
                 storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
@@ -26,6 +27,7 @@ export default class InventoriesController {
     }
 
     public async getById(ctx: HttpContextContract){
+        var obj = await ctx.auth.authenticate()
         var id= ctx.params.id
         var result=  await Inventory.query().preload("store", (storeQuery)=>
         storeQuery.preload('managerStaff', (staffQuery)=> staffQuery.preload("address", (addressQuery)=>
@@ -46,6 +48,7 @@ export default class InventoriesController {
         return result
     }
     public async create(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             film_id: schema.number(),
             store_id: schema.number(),
@@ -59,6 +62,7 @@ export default class InventoriesController {
         return result
     }
     public async update(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         const newSchema = schema.create({
             film_id: schema.number(),
             store_id: schema.number(),
@@ -75,6 +79,7 @@ export default class InventoriesController {
     }
 
     public async destory(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         var id = ctx.params.id
         var inventory = await Inventory.findOrFail(id)
         await inventory.delete()

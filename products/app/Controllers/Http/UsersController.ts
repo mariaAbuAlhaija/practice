@@ -17,8 +17,8 @@ export default class UsersController {
     }
 
     public async logout(ctx: HttpContextContract){
-        var obj = await ctx.auth.authenticate
-        await ctx.auth.logout
+        var obj = await ctx.auth.authenticate()
+        await ctx.auth.logout()
         return { message: "Logout" }
     }
 

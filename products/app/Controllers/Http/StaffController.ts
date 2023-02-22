@@ -21,7 +21,7 @@ export default class StaffController {
 }
 
 public async getById(ctx: HttpContextContract) {
-
+  var obj = await ctx.auth.authenticate()
     var id = ctx.params.id;
     var result = await Staff.query()
     .preload("address", (addressQuery)=>
@@ -40,6 +40,7 @@ public async getById(ctx: HttpContextContract) {
 }
 
 public async create(ctx: HttpContextContract) {
+  var obj = await ctx.auth.authenticate()
     const newSchema = schema.create({
         store_id: schema.number(),
         first_name: schema.string(),
@@ -72,6 +73,7 @@ public async create(ctx: HttpContextContract) {
 }
 
 public async update(ctx: HttpContextContract) {
+    var obj = await ctx.auth.authenticate()
     const newSchema = schema.create({
         store_id: schema.number(),
         first_name: schema.string(),
@@ -105,7 +107,7 @@ public async update(ctx: HttpContextContract) {
 
 
 public async destory(ctx: HttpContextContract) {
-
+    var obj = await ctx.auth.authenticate()
     var id = ctx.params.id;
     var staff = await Staff.findOrFail(id);
     await staff.delete();
