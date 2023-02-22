@@ -6,6 +6,12 @@ import Database from '@ioc:Adonis/Lucid/Database'
 // })
 
 Route.group(()=>{
+  Route.post('/',  "UsersController.create")
+  Route.post('/login',  "UsersController.login")
+  Route.post('/logout',  "UsersController.logout")
+}).prefix('/users')
+
+Route.group(()=>{
   Route.post('/',  "ActorsController.create")
   Route.put('/',  "ActorsController.update")
   Route.delete('/:id',  "ActorsController.destory")

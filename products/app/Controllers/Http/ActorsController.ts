@@ -6,6 +6,7 @@ import { schema } from '@ioc:Adonis/Core/Validator'
 
 export default class ActorsController {
     public async getAll(ctx: HttpContextContract) {
+        var obj = await ctx.auth.authenticate()
         var result = await Actor.all();
         return result;
     }
