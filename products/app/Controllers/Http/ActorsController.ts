@@ -13,7 +13,7 @@ export default class ActorsController {
 
         var obj = await ctx.auth.authenticate()
         var result = await query
-        return result;
+        return result;      
     }
 
     public async getById(ctx: HttpContextContract) {

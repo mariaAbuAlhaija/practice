@@ -5,14 +5,18 @@ import Film from 'App/Models/Film';
 export default class FilmsController {
     public async getAll(ctx: HttpContextContract) {
         var obj = await ctx.auth.authenticate()
-        var releaseYear=  ctx.request.input("releaseYear")
+
+        const page = ctx.request.input('page', 1)
+        const limit = 10
+
+        var rentalDuration=  ctx.request.input("rentalDuration")
 
         var query = Film.query()
-        if(releaseYear)
+        if(rentalDuration)
         {
-            query.where("release_year", releaseYear)
+            query.where("rental_duration", rentalDuration)
         }
-        var result= await query.preload("language").preload('originalLanguage')
+        var result= await query.preload("language").preload('originalLanguage').paginate(page, limit)
         return result;
     }
 
