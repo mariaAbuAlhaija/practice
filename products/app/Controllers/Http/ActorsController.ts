@@ -1,13 +1,18 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-// import Database from '@ioc:Adonis/Lucid/Database'
+import Database from '@ioc:Adonis/Lucid/Database'
 import Actor from 'App/Models/Actor';
 import { schema } from '@ioc:Adonis/Core/Validator'
 
 
 export default class ActorsController {
     public async getAll(ctx: HttpContextContract) {
+        const page = ctx.request.input('page', 1)
+        const limit = 10
+
+        const actors = await Database.from('actors').paginate(page, limit)
+
         var obj = await ctx.auth.authenticate()
-        var result = await Actor.all();
+        var result = await actors
         return result;
     }
 
