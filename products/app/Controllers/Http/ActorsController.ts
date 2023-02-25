@@ -9,10 +9,10 @@ export default class ActorsController {
         const page = ctx.request.input('page', 1)
         const limit = 10
 
-        const actors = await Database.from('actors').paginate(page, limit)
+        const query = await Actor.query().paginate(page, limit)
 
         var obj = await ctx.auth.authenticate()
-        var result = await actors
+        var result = await query
         return result;
     }
 
