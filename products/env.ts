@@ -28,5 +28,11 @@ export default Env.rules({
 	MYSQL_USER: Env.schema.string(),
 	MYSQL_PASSWORD: Env.schema.string.optional(),
 	MYSQL_DB_NAME: Env.schema.string(),
+
+	S3_KEY: Env.schema.string(),
+	S3_SECRET: Env.schema.string(),
+	S3_BUCKET: Env.schema.string(),
+	S3_REGION: Env.schema.string(),
+	S3_ENDPOINT: Env.schema.string.optional(),
 })
 

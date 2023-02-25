@@ -101,6 +101,7 @@ Route.group(()=>{
 
 Route.group(()=>{
   Route.post('/',  "StaffController.create")
+  Route.post('/upload',  "StaffController.uploadImage")
   Route.put('/',  "StaffController.update")
   Route.delete('/:id',  "StaffController.destory")
   Route.get('/:id',  "StaffController.getById")

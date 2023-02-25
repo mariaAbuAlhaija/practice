@@ -1,6 +1,8 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Staff from 'App/Models/Staff';
+import Drive from '@ioc:Adonis/Core/Drive'
+import Application from '@ioc:Adonis/Core/Application'
 
 export default class StaffController { 
     public async getAll(ctx: HttpContextContract) {
@@ -112,4 +114,13 @@ public async destory(ctx: HttpContextContract) {
     var staff = await Staff.findOrFail(id);
     await staff.delete();
     return { message: "The staff has been deleted!" };
-}}
+}
+
+public async uploadImage(ctx: HttpContextContract){
+  var image= ctx.request.file("image")
+  if(!image) return{ message: "Invalid file" }
+  await image.move(Application.tmpPath("images"))
+  return{ message: "The image has been uploaded!" }
+}
+
+}
