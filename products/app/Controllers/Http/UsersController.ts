@@ -1,6 +1,8 @@
+import I18n from '@ioc:Adonis/Addons/I18n';
 import { HealthReport } from '@ioc:Adonis/Core/HealthCheck';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import Schema from '@ioc:Adonis/Lucid/Schema';
 import User from 'App/Models/User';
 
 export default class UsersController {
@@ -9,9 +11,26 @@ export default class UsersController {
     }
 
     public async login(ctx: HttpContextContract){
-        var obj= await ctx.request.all()
-        var email = obj.email
-        var password = obj.password
+        // var obj= await ctx.request.all()
+        const newSchema= schema.create({
+            email: schema.string({}, [
+                rules.email(),
+            ]),
+            password: schema.string()
+        })
+
+        var languageFromHeader = ctx.request.header('language');
+        var langauge: string = languageFromHeader != null ? languageFromHeader : "ar";
+
+        const fields= await ctx.request.validate({
+            schema: newSchema,
+            messages:{
+                "email.required": I18n.locale(langauge).formatMessage("message.requeired", {field: "email"})
+            }
+        })
+
+        var email = fields.email
+        var password = fields.password
         var result = await ctx.auth.attempt(email, password)
         return result
     }
