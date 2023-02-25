@@ -5,8 +5,14 @@ import Film from 'App/Models/Film';
 export default class FilmsController {
     public async getAll(ctx: HttpContextContract) {
         var obj = await ctx.auth.authenticate()
-        console.log(obj)
-        var result = await Film.query().preload("language").preload('originalLanguage'); ;
+        var releaseYear=  ctx.request.input("releaseYear")
+
+        var query = Film.query()
+        if(releaseYear)
+        {
+            query.where("release_year", releaseYear)
+        }
+        var result= await query.preload("language").preload('originalLanguage')
         return result;
     }
 
