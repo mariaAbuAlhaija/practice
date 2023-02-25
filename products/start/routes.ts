@@ -7,6 +7,7 @@ import Database from '@ioc:Adonis/Lucid/Database'
 
 Route.group(()=>{
   Route.post('/',  "UsersController.create")
+  Route.post('/email',  "UsersController.sendingEmail")
   Route.post('/login',  "UsersController.login")
   Route.post('/logout',  "UsersController.logout")
 }).prefix('/users')

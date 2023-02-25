@@ -1,4 +1,5 @@
 import I18n from '@ioc:Adonis/Addons/I18n';
+import Mail from '@ioc:Adonis/Addons/Mail';
 import { HealthReport } from '@ioc:Adonis/Core/HealthCheck';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
@@ -59,5 +60,15 @@ export default class UsersController {
          var newuser = await user.save()
          return newuser
     }
+    // public async sendingEmail(ctx: HttpContextContract){
+    //     await Mail.send( (message) => {
+    //         message
+    //           .to('mayachamj.gd27@gmail.com')
+    //           .from('noreply@example.com')
+    //           .subject('Welcome to my website')
+    //       })
+    // }
+
+
 
 }
