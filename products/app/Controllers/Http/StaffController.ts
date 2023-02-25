@@ -117,9 +117,18 @@ public async destory(ctx: HttpContextContract) {
 }
 
 public async uploadImage(ctx: HttpContextContract){
-  var image= ctx.request.file("image")
+  var image= ctx.request.file("image", {
+    extnames:["png", "jpg", "jpeg"]
+  })
   if(!image) return{ message: "Invalid file" }
   await image.move(Application.tmpPath("images"))
+  return{ message: "The image has been uploaded!" }
+}
+
+public async uploadToDrive(ctx: HttpContextContract){
+  var image= ctx.request.file("image")
+  if(!image) return{ message: "Invalid file" }
+  await image.moveToDisk('images')
   return{ message: "The image has been uploaded!" }
 }
 
